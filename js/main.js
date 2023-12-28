@@ -46,29 +46,35 @@ scene.add( helper );
 // groundMesh.position.set(0, -10, 0);
 
 
-const geometryPlane = new THREE.PlaneGeometry(500, 500, 1, 1);
+const geometryPlane = new THREE.PlaneGeometry(500, 500, 10, 10);
 // geometryPlane.addAttribute('position', new THREE.BufferAttribute(points, 3));
-const materialPlane = new THREE.MeshBasicMaterial( {color: 0xBF9000, wireframe: true, side: THREE.DoubleSide} );
+const materialPlane = new THREE.MeshBasicMaterial( {color: 0xBF9000, wireframe: false, side: THREE.DoubleSide} );
 const plane = new THREE.Mesh( geometryPlane, materialPlane );
 plane.rotation.x = -Math.PI / 2;
+plane.castShadowShadow = true;
 scene.add( plane );
 plane.position.set(0, -10, 0);
 
-const vertices = geometryPlane.attributes.position.array;
-
-console.log(plane.geometry.attributes.position.array);
-
-const positionAttribute = plane.geometry.getAttribute( 'position' );
-
-const vertex = new THREE.Vector3();
-
-for ( let vertexIndex = 0; vertexIndex < positionAttribute.count; vertexIndex ++ ) {
-
-	vertex.fromBufferAttribute( positionAttribute, vertexIndex );
-
-	// do something with vertex
-
+const peak = 60;
+// const vertices = geometryPlane.attributes.position.array;
+const vertices = plane.geometry.attributes.position.array
+console.log(vertices);
+for (var i = 0; i <= vertices.length; i += 3) {
+    vertices[i+2] = peak * Math.random();
 }
+plane.geometry.attributes.position.needsUpdate = true;
+plane.geometry.computeVertexNormals();
+
+
+// const positionAttribute = plane.geometry.getAttribute( 'position' );
+
+// for ( let vertexIndex = 0; vertexIndex < positionAttribute.count; vertexIndex ++ ) {
+
+// 	vertex.fromBufferAttribute( positionAttribute, vertexIndex );
+
+// 	// do something with vertex
+
+// }
 
 // vertices.forEach(function(v) {
 //     if (v.x == 250 && v.z == 250) {
