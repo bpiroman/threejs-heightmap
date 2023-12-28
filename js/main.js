@@ -28,15 +28,6 @@ light.shadow.camera.far = 500; // default
 const helper = new THREE.CameraHelper( light.shadow.camera );
 scene.add( helper );
 
-const groundGeo = new THREE.PlaneGeometry(100, 100, 10, 10);
-const heightMap = new THREE.TextureLoader().load('textures/1200px-Hand_made_terrain_heightmap.png');
-const groundMat = new THREE.MeshLambertMaterial({
-    color: 0xffffff,
-    wireframe: false,
-    displacementMap: heightMap,
-    displacementScale: 10,
-    side: THREE.DoubleSide
-});
 // const groundMat = new THREE.MeshStandardMaterial({
 //     color: 0xffffff,
 //     wireframe: false,
@@ -47,24 +38,65 @@ const groundMat = new THREE.MeshLambertMaterial({
 //     color: 0xBF9000,
 //     wireframe: true
 // });
-const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-groundMesh.rotation.x = -Math.PI / 2;
-groundMesh.castShadow = true; //default is false
-groundMesh.receiveShadow = false; //default
-scene.add(groundMesh);
-groundMesh.position.set(0, -10, 0);
+// const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+// groundMesh.rotation.x = -Math.PI / 2;
+// groundMesh.castShadow = true; //default is false
+// groundMesh.receiveShadow = false; //default
+// scene.add(groundMesh);
+// groundMesh.position.set(0, -10, 0);
 
 
-// const geometryPlane = new THREE.PlaneGeometry(100, 100, 10, 10);
-// const materialPlane = new THREE.MeshBasicMaterial( {color: 0xBF9000, side: THREE.DoubleSide} );
-// const plane = new THREE.Mesh( geometryPlane, materialPlane );
-// plane.rotation.x = -Math.PI / 2;
-// scene.add( plane );
-// plane.position.set(0, -10, 0);
+const geometryPlane = new THREE.PlaneGeometry(500, 500, 1, 1);
+// geometryPlane.addAttribute('position', new THREE.BufferAttribute(points, 3));
+const materialPlane = new THREE.MeshBasicMaterial( {color: 0xBF9000, wireframe: true, side: THREE.DoubleSide} );
+const plane = new THREE.Mesh( geometryPlane, materialPlane );
+plane.rotation.x = -Math.PI / 2;
+scene.add( plane );
+plane.position.set(0, -10, 0);
+
+const vertices = geometryPlane.attributes.position.array;
+
+console.log(plane.geometry.attributes.position.array);
+
+const positionAttribute = plane.geometry.getAttribute( 'position' );
+
+const vertex = new THREE.Vector3();
+
+for ( let vertexIndex = 0; vertexIndex < positionAttribute.count; vertexIndex ++ ) {
+
+	vertex.fromBufferAttribute( positionAttribute, vertexIndex );
+
+	// do something with vertex
+
+}
+
+// vertices.forEach(function(v) {
+//     if (v.x == 250 && v.z == 250) {
+//         v.y = 64.0;
+//     } else {
+//         v.y = 0.0
+//     }
+// })
+
+// geometryPlane.vertices.forEach( v => { v.z = noiseFunction( v.x, v.y ); } )
+
+// modifyVertices() {
+//     for (each vertex of geometryPlane.vertices) {
+//         // make one corner really high
+//         if (v.x == 250 && v.z == 250) {
+//             v.y = 64.0;
+//         } else {
+//             v.y = 0.0
+//         }
+//     }
+// }
 
 camera.position.z = 100;
 camera.position.y = 100;
 controls.update();
+
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
 
 function animate() {
 	requestAnimationFrame( animate );
