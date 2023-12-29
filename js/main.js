@@ -65,6 +65,11 @@ for (var i = 0; i <= vertices.length; i += 3) {
 plane.geometry.attributes.position.needsUpdate = true;
 plane.geometry.computeVertexNormals();
 
+const geometry = new THREE.BoxGeometry( 10, 10, 10 );
+const material = new THREE.MeshBasicMaterial( { color: 0xFF0000} );
+const cube = new THREE.Mesh( geometry, material );
+scene.add( cube );
+cube.position.set(0, 80, 80);
 
 // const positionAttribute = plane.geometry.getAttribute( 'position' );
 
@@ -97,8 +102,8 @@ plane.geometry.computeVertexNormals();
 //     }
 // }
 
-camera.position.z = 100;
-camera.position.y = 100;
+camera.position.z = 400;
+camera.position.y = 250;
 controls.update();
 
 const axesHelper = new THREE.AxesHelper( 5 );
