@@ -29,20 +29,24 @@ light.shadow.camera.top = 100;
 light.shadow.camera.bottom = -100;
 scene.add(light);
 
-const helper = new THREE.DirectionalLightHelper( light, 5 );
-scene.add( helper );
+// const helper = new THREE.DirectionalLightHelper( light, 5 );
+// scene.add( helper );
 
-// light = new THREE.AmbientLight(0x909090);
-// scene.add(light);
+light = new THREE.AmbientLight(0x909090);
+scene.add(light);
 
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
+const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
+console.log(heightMap);
 
 const plane = new THREE.Mesh(
-	new THREE.PlaneGeometry(500, 500, 20, 20),
+	new THREE.PlaneGeometry(786, 577, 20, 20),
 	new THREE.MeshStandardMaterial({
-		color: 0xFFFFFF,
+		// color: 0xFFFFFF,
 		side: THREE.DoubleSide,
-		map: texture
+		map: texture,
+		// displacementMap: heightMap,
+		// displacementScale: 10
 	  })
 );
 plane.castShadow = true;
@@ -50,14 +54,14 @@ plane.receiveShadow = true;
 plane.rotation.x = -Math.PI / 2;
 scene.add(plane);
 
-const peak = 50;
-const vertices = plane.geometry.attributes.position.array
-console.log(vertices);
-for (var i = 0; i <= vertices.length; i += 3) {
-    vertices[i+2] = peak * Math.random();
-}
-plane.geometry.attributes.position.needsUpdate = true;
-plane.geometry.computeVertexNormals();
+// const peak = 50;
+// const vertices = plane.geometry.attributes.position.array
+// console.log(vertices);
+// for (var i = 0; i <= vertices.length; i += 3) {
+//     vertices[i+2] = peak * Math.random();
+// }
+// plane.geometry.attributes.position.needsUpdate = true;
+// plane.geometry.computeVertexNormals();
 
 const cube = new THREE.Mesh(
 	new THREE.BoxGeometry( 10, 10, 10 ),
@@ -78,6 +82,17 @@ torusKnot.position.set(0, 100, 0);
 torusKnot.castShadow = true;
 torusKnot.receiveShadow = true;
 scene.add(torusKnot)
+
+const loader = new THREE.CubeTextureLoader();
+const textureCube = loader.load([
+	'./textures/cubemap/px.png',
+	'./textures/cubemap/nx.png',
+	'./textures/cubemap/py.png',
+	'./textures/cubemap/ny.png',
+	'./textures/cubemap/pz.png',
+	'./textures/cubemap/nz.png',
+]);
+scene.background = textureCube;
 
 //Create a helper for the shadow camera (optional)
 // const helper = new THREE.CameraHelper( light.shadow.camera );
