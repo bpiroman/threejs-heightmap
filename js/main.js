@@ -36,13 +36,14 @@ light = new THREE.AmbientLight(0x909090);
 scene.add(light);
 
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
+texture.encoding = THREE.sRGBEncoding;
 const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
 console.log(heightMap);
 
 const plane = new THREE.Mesh(
 	new THREE.PlaneGeometry(786, 577, 20, 20),
 	new THREE.MeshStandardMaterial({
-		// color: 0xFFFFFF,
+		// color: '0x000000',
 		side: THREE.DoubleSide,
 		map: texture,
 		// displacementMap: heightMap,
@@ -78,7 +79,7 @@ const torusKnot = new THREE.Mesh(
 	new THREE.TorusKnotGeometry(10, 4, 100, 16),
 	new THREE.MeshStandardMaterial({ color: 0xff0000 })
 );
-torusKnot.position.set(0, 100, 0);
+torusKnot.position.set(0, 10, 250);
 torusKnot.castShadow = true;
 torusKnot.receiveShadow = true;
 scene.add(torusKnot)
@@ -100,7 +101,7 @@ scene.background = textureCube;
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-camera.position.z = 400;
+camera.position.z = 0;
 camera.position.y = 250;
 controls.update();
 
