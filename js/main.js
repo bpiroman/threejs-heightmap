@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 );
 
 const renderer = new THREE.WebGLRenderer();
 renderer.shadowMap.enabled = true;
@@ -14,7 +14,7 @@ document.body.appendChild( renderer.domElement );
 
 //Create a DirectionalLight and turn on shadows for the light
 let light = new THREE.DirectionalLight( 0xffffff, 1 );
-light.position.set( 20, 500, 10 ); //default; light shining from top
+light.position.set( 500, 500, 0 ); //default; light shining from top
 light.castShadow = true; // default false
 light.shadow.bias = -0.001;
 light.shadow.mapSize.width = 2048;
@@ -22,18 +22,18 @@ light.shadow.mapSize.height = 2048;
 light.shadow.camera.near = 0.1;
 light.shadow.camera.far = 500.0;
 light.shadow.camera.near = 0.5;
-light.shadow.camera.far = 500.0;
-light.shadow.camera.left = 100;
-light.shadow.camera.right = -100;
-light.shadow.camera.top = 100;
-light.shadow.camera.bottom = -100;
+light.shadow.camera.far = 1000.0;
+light.shadow.camera.left = 500;
+light.shadow.camera.right = -500;
+light.shadow.camera.top = 500;
+light.shadow.camera.bottom = -500;
 scene.add(light);
 
 // const helper = new THREE.DirectionalLightHelper( light, 5 );
 // scene.add( helper );
 
-light = new THREE.AmbientLight(0x909090);
-scene.add(light);
+// light = new THREE.AmbientLight(0x909090);
+// scene.add(light);
 
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
 texture.encoding = THREE.sRGBEncoding;
@@ -55,14 +55,14 @@ plane.receiveShadow = true;
 plane.rotation.x = -Math.PI / 2;
 scene.add(plane);
 
-// const peak = 50;
-// const vertices = plane.geometry.attributes.position.array
-// console.log(vertices);
-// for (var i = 0; i <= vertices.length; i += 3) {
-//     vertices[i+2] = peak * Math.random();
-// }
-// plane.geometry.attributes.position.needsUpdate = true;
-// plane.geometry.computeVertexNormals();
+const peak = 50;
+const vertices = plane.geometry.attributes.position.array
+console.log(vertices);
+for (var i = 0; i <= vertices.length; i += 3) {
+    vertices[i+2] = peak * Math.random();
+}
+plane.geometry.attributes.position.needsUpdate = true;
+plane.geometry.computeVertexNormals();
 
 const cube = new THREE.Mesh(
 	new THREE.BoxGeometry( 10, 10, 10 ),
@@ -79,7 +79,7 @@ const torusKnot = new THREE.Mesh(
 	new THREE.TorusKnotGeometry(10, 4, 100, 16),
 	new THREE.MeshStandardMaterial({ color: 0xff0000 })
 );
-torusKnot.position.set(0, 10, 250);
+torusKnot.position.set(0, 40, 25);
 torusKnot.castShadow = true;
 torusKnot.receiveShadow = true;
 scene.add(torusKnot)
@@ -96,8 +96,8 @@ const textureCube = loader.load([
 scene.background = textureCube;
 
 //Create a helper for the shadow camera (optional)
-// const helper = new THREE.CameraHelper( light.shadow.camera );
-// scene.add( helper );
+const helper = new THREE.CameraHelper( light.shadow.camera );
+scene.add( helper );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
