@@ -32,22 +32,23 @@ scene.add(light);
 // const helper = new THREE.DirectionalLightHelper( light, 5 );
 // scene.add( helper );
 
-// light = new THREE.AmbientLight(0x909090);
-// scene.add(light);
+light = new THREE.AmbientLight(0x909090);
+scene.add(light);
 
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
 texture.encoding = THREE.sRGBEncoding;
 const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
+heightMap.encoding = THREE.sRGBEncoding;
 console.log(heightMap);
 
 const plane = new THREE.Mesh(
-	new THREE.PlaneGeometry(786, 577, 20, 20),
+	new THREE.PlaneGeometry(786, 577, 30, 30),
 	new THREE.MeshStandardMaterial({
-		// color: '0x000000',
+		color: '0x000000',
 		side: THREE.DoubleSide,
 		map: texture,
-		// displacementMap: heightMap,
-		// displacementScale: 10
+		displacementMap: heightMap,
+		displacementScale: 2
 	  })
 );
 plane.castShadow = true;
@@ -55,14 +56,21 @@ plane.receiveShadow = true;
 plane.rotation.x = -Math.PI / 2;
 scene.add(plane);
 
-const peak = 50;
-const vertices = plane.geometry.attributes.position.array
-console.log(vertices);
-for (var i = 0; i <= vertices.length; i += 3) {
-    vertices[i+2] = peak * Math.random();
-}
-plane.geometry.attributes.position.needsUpdate = true;
-plane.geometry.computeVertexNormals();
+// const peak = 50;
+// const vertices = plane.geometry.attributes.position.array
+// console.log(vertices);
+// for (var i = 0; i <= vertices.length; i += 3) {
+//     vertices[i+2] = peak * Math.random();
+// }
+// plane.geometry.attributes.position.needsUpdate = true;
+// plane.geometry.computeVertexNormals();
+
+// for (each vertex of plane.vertices) {
+// 	dist = vec2(v.x, v.z).distanceTo(vec(0,0));
+// 	h = 1.0 - Math.sat(dist / 250);
+// 	h = h * h * h * (h * (h * 6 - 15) + 10);
+// }
+
 
 const cube = new THREE.Mesh(
 	new THREE.BoxGeometry( 10, 10, 10 ),
@@ -96,8 +104,8 @@ const textureCube = loader.load([
 scene.background = textureCube;
 
 //Create a helper for the shadow camera (optional)
-const helper = new THREE.CameraHelper( light.shadow.camera );
-scene.add( helper );
+// const helper = new THREE.CameraHelper( light.shadow.camera );
+// scene.add( helper );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
