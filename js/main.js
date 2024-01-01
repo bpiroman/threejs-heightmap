@@ -1,5 +1,3 @@
-// testing
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -89,15 +87,24 @@ function _GetImageData(image) {
     const context = canvas.getContext( '2d' );
     context.drawImage(image, 0, 0);
 
-	const data = getImageData(image);
-
-	console.log(data);
-
-    // return context.getImageData(0, 0, image.width, image.height);
+    return context.getImageData(0, 0, image.width, image.height);
 }
 
-// _GetImageData(img1);
-// console.log(heightMap);
+const data = _GetImageData(img1);
+console.log(data.data);
+const vertices = plane.geometry.attributes.position.array
+for (var i = 0; i <= vertices.length; i += 3) {
+	let vx = vertices[i];
+	let vy = vertices[i+1];
+	if (vx == -393 && vy == 288.5) {
+		const position = (vx + data.width * vy) * 4;
+		const dataImageData = data.data;
+		const result = dataImageData[position] / 255.0;
+		console.log(result);
+	} else {
+		vertices[i+2] = 0.0;
+	}
+}
 
 // const peak = 50;
 // const vertices = plane.geometry.attributes.position.array
@@ -177,7 +184,6 @@ controls.update();
 function animate() {
 	requestAnimationFrame( animate );
 	renderer.render( scene, camera );
-	// var screenshot = renderer.domElement.toDataURL();
 }
 
 animate();
