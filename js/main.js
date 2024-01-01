@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 );
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20000 );
 
 const renderer = new THREE.WebGLRenderer();
 renderer.shadowMap.enabled = true;
@@ -22,7 +22,7 @@ light.shadow.mapSize.height = 2048;
 light.shadow.camera.near = 0.1;
 light.shadow.camera.far = 500.0;
 light.shadow.camera.near = 0.5;
-light.shadow.camera.far = 1000.0;
+light.shadow.camera.far = 10000.0;
 light.shadow.camera.left = 500;
 light.shadow.camera.right = -500;
 light.shadow.camera.top = 500;
@@ -38,17 +38,13 @@ scene.add(light);
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
 texture.encoding = THREE.sRGBEncoding;
 const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
-heightMap.encoding = THREE.sRGBEncoding;
-console.log(heightMap);
 
 const plane = new THREE.Mesh(
-	new THREE.PlaneGeometry(786, 577, 30, 30),
+	new THREE.PlaneGeometry(786, 577, 50, 50),
 	new THREE.MeshStandardMaterial({
-		color: '0x000000',
+		// color: '0x000000',
 		side: THREE.DoubleSide,
-		map: texture,
-		displacementMap: heightMap,
-		displacementScale: 2
+		map: texture
 	  })
 );
 plane.castShadow = true;
@@ -56,11 +52,53 @@ plane.receiveShadow = true;
 plane.rotation.x = -Math.PI / 2;
 scene.add(plane);
 
+// Modify one vertice
+// const vertices = plane.geometry.attributes.position.array
+// for (var i = 0; i <= vertices.length; i += 3) {
+// 	let vx = vertices[i];
+// 	let vy = vertices[i+1];
+// 	if (vx == -393 && vy == 288.5) {
+// 		vertices[i+2] = 64.0;
+// 	} else {
+// 		vertices[i+2] = 0.0;
+// 	}
+// }
+
+// Modify Vertice with a Bump
+const vertices = plane.geometry.attributes.position.array
+for (var i = 0; i <= vertices.length; i += 3) {
+	let vx = vertices[i];
+	let vy = vertices[i+1];
+	const dist = new THREE.Vector2(vx, vy).distanceTo(new THREE.Vector2(0, 0));
+	let h = Math.min(Math.max((dist/300), 0.0), 1.0);
+	h = h * h * h * (h * (h * 6 - 15) + 10);
+	h = h*-64.0;
+	vertices[i+2] = h
+}
+
 // const peak = 50;
 // const vertices = plane.geometry.attributes.position.array
 // console.log(vertices);
 // for (var i = 0; i <= vertices.length; i += 3) {
 //     vertices[i+2] = peak * Math.random();
+// }
+// plane.geometry.attributes.position.needsUpdate = true;
+// plane.geometry.computeVertexNormals();
+
+// const vertices = plane.geometry.attributes.position.array
+// for (var i = 0; i <= vertices.length; i += 3) {
+// 	vertices[i+2] = Math.random() * 20;
+// }
+// plane.geometry.attributes.position.needsUpdate = true;
+// plane.geometry.computeVertexNormals();
+
+// const vertices = plane.geometry.attributes.position.array
+// for (var i = 0; i <= vertices.length; i += 3) {
+// 	let vx = vertices[i];
+// 	let vz = vertices[i+2];
+// 	let dist = new THREE.Vector2(vx, vz).distanceTo(new THREE.Vector2(0, 0));
+// 	let h = 1.0 - (dist / 250);
+// 	vertices[i+2] = h * h * h * (h * (h * 6 - 15) + 10);
 // }
 // plane.geometry.attributes.position.needsUpdate = true;
 // plane.geometry.computeVertexNormals();
