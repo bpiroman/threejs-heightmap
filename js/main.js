@@ -65,16 +65,19 @@ scene.add(plane);
 // }
 
 // Modify Vertice with a Bump
-const vertices = plane.geometry.attributes.position.array
-for (var i = 0; i <= vertices.length; i += 3) {
-	let vx = vertices[i];
-	let vy = vertices[i+1];
-	const dist = new THREE.Vector2(vx, vy).distanceTo(new THREE.Vector2(0, 0));
-	let h = Math.min(Math.max((dist/300), 0.0), 1.0);
-	h = h * h * h * (h * (h * 6 - 15) + 10);
-	h = h*-64.0;
-	vertices[i+2] = h
-}
+// const vertices = plane.geometry.attributes.position.array
+// for (var i = 0; i <= vertices.length; i += 3) {
+// 	let vx = vertices[i];
+// 	let vy = vertices[i+1];
+// 	const dist = new THREE.Vector2(vx, vy).distanceTo(new THREE.Vector2(0, 0));
+// 	let h = Math.min(Math.max((dist/300), 0.0), 1.0);
+// 	h = h * h * h * (h * (h * 6 - 15) + 10);
+// 	h = h*-64.0;
+// 	vertices[i+2] = h
+// }
+
+// Modify vertices with Height Map
+
 
 // const peak = 50;
 // const vertices = plane.geometry.attributes.position.array
