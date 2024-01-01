@@ -7,6 +7,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20000 );
 
 const renderer = new THREE.WebGLRenderer();
+// renderer.preserveDrawingBuffer = true;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -36,7 +37,7 @@ light = new THREE.AmbientLight(0x909090);
 scene.add(light);
 
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
-texture.encoding = THREE.sRGBEncoding;
+texture.colorSpace = THREE.SRGBColorSpace;
 const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
 
 const plane = new THREE.Mesh(
@@ -72,12 +73,31 @@ scene.add(plane);
 // 	const dist = new THREE.Vector2(vx, vy).distanceTo(new THREE.Vector2(0, 0));
 // 	let h = Math.min(Math.max((dist/300), 0.0), 1.0);
 // 	h = h * h * h * (h * (h * 6 - 15) + 10);
-// 	h = h*-64.0;
+// 	h = h*64.0;
 // 	vertices[i+2] = h
 // }
 
 // Modify vertices with Height Map
+const img1 = new Image(); // Image constructor
+img1.src = "./textures/WAPL_2022_heightmap_1m.png";
 
+function _GetImageData(image) {
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    const context = canvas.getContext( '2d' );
+    context.drawImage(image, 0, 0);
+
+	const data = getImageData(image);
+
+	console.log(data);
+
+    // return context.getImageData(0, 0, image.width, image.height);
+}
+
+// _GetImageData(img1);
+// console.log(heightMap);
 
 // const peak = 50;
 // const vertices = plane.geometry.attributes.position.array
@@ -157,6 +177,7 @@ controls.update();
 function animate() {
 	requestAnimationFrame( animate );
 	renderer.render( scene, camera );
+	// var screenshot = renderer.domElement.toDataURL();
 }
 
 animate();
