@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20000 );
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({preserveDrawingBuffer:true});
 // renderer.preserveDrawingBuffer = true;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
@@ -75,7 +75,7 @@ scene.add(plane);
 // 	vertices[i+2] = h
 // }
 
-// Modify vertices with Height Map
+// // Modify vertices with Height Map
 const img1 = new Image(); // Image constructor
 img1.src = "./textures/WAPL_2022_heightmap_1m.png";
 
@@ -187,9 +187,6 @@ function animate() {
 }
 
 animate();
-
-
-
 
 // const scene = new THREE.Scene();
 // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
