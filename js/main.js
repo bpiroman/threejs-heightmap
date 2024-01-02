@@ -91,8 +91,9 @@ function _GetImageData(image) {
 		ctx.drawImage(image, 0, 0);
 		const dataImg = ctx.getImageData(0, 0, image.width, image.height);
 		console.log(dataImg.data);
-		// return dataImg
+		return dataImg
 	};
+	return data;
 }
 _GetImageData(img1);
 // const vertices = plane.geometry.attributes.position.array
@@ -110,13 +111,6 @@ _GetImageData(img1);
 // 		vertices[i+2] = 0.0;
 // 	}
 // }
-
-// async function dummy() {
-// 	console.log("this comes first");
-// 	const data = await _GetImageData(img1);
-// 	console.log("this comes last");
-// }
-// dummy();
 
 
 // const peak = 50;
