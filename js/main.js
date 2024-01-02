@@ -75,7 +75,7 @@ scene.add(plane);
 // 	vertices[i+2] = h
 // }
 
-// // Modify vertices with Height Map
+// Modify vertices with Height Map
 const img1 = new Image(); // Image constructor
 img1.src = "./textures/WAPL_2022_heightmap_1m.png";
 
@@ -84,27 +84,40 @@ function _GetImageData(image) {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    const context = canvas.getContext( '2d' );
-    context.drawImage(image, 0, 0);
+    const ctx = canvas.getContext( '2d' );
+    ctx.drawImage(image, 0, 0);
 
-    return context.getImageData(0, 0, image.width, image.height);
+	const data = image.onload = () => {
+		ctx.drawImage(image, 0, 0);
+		const dataImg = ctx.getImageData(0, 0, image.width, image.height);
+		console.log(dataImg.data);
+		// return dataImg
+	};
 }
+_GetImageData(img1);
+// const vertices = plane.geometry.attributes.position.array
+// for (var i = 0; i <= vertices.length; i += 3) {
+// 	let vx = vertices[i];
+// 	let vy = vertices[i+1];
+// 	if (vx == -393 && vy == 288.5) {
+// 		// console.log(data);
+// 		const position = (vx + dataImg.width * vy) * 4;
+// 		const dataImageData = dataImg.data;
+// 		const result = dataImageData[position] / 255.0;
+// 		console.log(result*100);
+// 		vertices[i+2] = result * 100;
+// 	} else {
+// 		vertices[i+2] = 0.0;
+// 	}
+// }
 
-const data = _GetImageData(img1);
-console.log(data.data);
-const vertices = plane.geometry.attributes.position.array
-for (var i = 0; i <= vertices.length; i += 3) {
-	let vx = vertices[i];
-	let vy = vertices[i+1];
-	if (vx == -393 && vy == 288.5) {
-		const position = (vx + data.width * vy) * 4;
-		const dataImageData = data.data;
-		const result = dataImageData[position] / 255.0;
-		console.log(result);
-	} else {
-		vertices[i+2] = 0.0;
-	}
-}
+// async function dummy() {
+// 	console.log("this comes first");
+// 	const data = await _GetImageData(img1);
+// 	console.log("this comes last");
+// }
+// dummy();
+
 
 // const peak = 50;
 // const vertices = plane.geometry.attributes.position.array
