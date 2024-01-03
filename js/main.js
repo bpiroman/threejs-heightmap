@@ -87,30 +87,56 @@ function _GetImageData(image) {
     const ctx = canvas.getContext( '2d' );
     ctx.drawImage(image, 0, 0);
 
-	const data = image.onload = () => {
-		ctx.drawImage(image, 0, 0);
-		const dataImg = ctx.getImageData(0, 0, image.width, image.height);
-		console.log(dataImg.data);
-		return dataImg
-	};
+	ctx.drawImage(image, 0, 0);
+	const data = ctx.getImageData(0, 0, image.width, image.height);
+	console.log(data.data);
 	return data;
 }
-_GetImageData(img1);
-// const vertices = plane.geometry.attributes.position.array
-// for (var i = 0; i <= vertices.length; i += 3) {
-// 	let vx = vertices[i];
-// 	let vy = vertices[i+1];
-// 	if (vx == -393 && vy == 288.5) {
-// 		// console.log(data);
-// 		const position = (vx + dataImg.width * vy) * 4;
-// 		const dataImageData = dataImg.data;
-// 		const result = dataImageData[position] / 255.0;
-// 		console.log(result*100);
-// 		vertices[i+2] = result * 100;
-// 	} else {
-// 		vertices[i+2] = 0.0;
+
+window.addEventListener("load", function() { 
+	const dataImg = _GetImageData(img1);
+
+	const vertices = plane.geometry.attributes.position.array
+	for (var i = 0; i <= vertices.length; i += 3) {
+		let vx = vertices[i];
+		let vy = vertices[i+1];
+		if (vx == -393 && vy == 288.5) {
+			// console.log(data);
+			const position = (vx + dataImg.width * vy) * 4;
+			const dataImageData = dataImg.data;
+			const result = dataImageData[position] / 255.0;
+			console.log(result);
+			vertices[i+2] = result;
+		} else {
+			vertices[i+2] = 0.0;
+		}
+	}
+	plane.geometry.attributes.position.needsUpdate = true;
+	plane.geometry.computeVertexNormals();
+});
+
+// this works
+// window.addEventListener("load", function() { 
+// 	const dataImg = _GetImageData(img1);
+
+// 	const vertices = plane.geometry.attributes.position.array
+// 	for (var i = 0; i <= vertices.length; i += 3) {
+// 		let vx = vertices[i];
+// 		let vy = vertices[i+1];
+// 		if (vx == -393 && vy == 288.5) {
+// 			// console.log(data);
+// 			const position = (vx + dataImg.width * vy) * 4;
+// 			const dataImageData = dataImg.data;
+// 			const result = dataImageData[position] / 255.0;
+// 			console.log(result);
+// 			vertices[i+2] = result;
+// 		} else {
+// 			vertices[i+2] = 0.0;
+// 		}
 // 	}
-// }
+// 	plane.geometry.attributes.position.needsUpdate = true;
+// 	plane.geometry.computeVertexNormals();
+// });
 
 
 // const peak = 50;
