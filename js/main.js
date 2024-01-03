@@ -78,11 +78,17 @@ scene.add(plane);
 // Modify vertices with Height Map
 const img1 = new Image(); // Image constructor
 img1.src = "./textures/WAPL_2022_heightmap_1m.png";
+const imgSimon = new Image();
+imgSimon.src = "./textures/heightmap-simondev.jpg";
 
-function _GetImageData(image) {
+function _GetImageData(image, simon) {
     const canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
+	console.log("image width: "+image.width);
+	console.log("image height: "+image.height);
+	console.log("SimonDev image width: "+simon.width);
+	console.log("SimonDev image height: "+simon.height);
 
     const ctx = canvas.getContext( '2d' );
     ctx.drawImage(image, 0, 0);
@@ -94,22 +100,31 @@ function _GetImageData(image) {
 }
 
 window.addEventListener("load", function() { 
-	const dataImg = _GetImageData(img1);
+	const dataImg = _GetImageData(img1, imgSimon);
 
 	const vertices = plane.geometry.attributes.position.array
 	for (var i = 0; i <= vertices.length; i += 3) {
 		let vx = vertices[i];
 		let vy = vertices[i+1];
 		// console.log(data);
-		const position = (vx + dataImg.width * vy) * 4;
-		const dataImageData = dataImg.data;
-		const result = dataImageData[position] / 255.0;
-		console.log(result);
-		vertices[i+2] = result;
+		if (vx == -393 && vy == 288.5) {
+			// console.log(data);
+			const position = (vx + dataImg.width * vy) * 4;
+			const dataImageData = dataImg.data;
+			const result = dataImageData[position] / 255.0;
+			console.log(result*10);
+			vertices[i+2] = result*10;
 
-		// Bilinear filter
-		const offset = new THREE.Vector2(-250, -250);
-		const dimensions = new THREE.Vector2(500, 500);
+			// Bilinear filter
+			const offset = new THREE.Vector2(-250, -250);
+			const dimensions = new THREE.Vector2(500, 500);
+			console.log(offset);
+			console.log(dimensions);
+
+		} else {
+			vertices[i+2] = 0.0;
+		}
+
 	
 		// const xf = 1.0 - math.sat((x - offset.x) / dimensions.x);
 		// const yf = math.sat((y - offset.y) / dimensions.y);
@@ -214,6 +229,19 @@ torusKnot.position.set(0, 40, 25);
 torusKnot.castShadow = true;
 torusKnot.receiveShadow = true;
 scene.add(torusKnot)
+
+const dotPoints = [];
+dotPoints.push( new THREE.Vector3( -392.5, 0, 0 ) );
+dotPoints.push( new THREE.Vector3( -392.5, 0, -288 ) );
+
+const dotGeometry = new THREE.BufferGeometry().setFromPoints( dotPoints );
+const dotMaterial = new THREE.PointsMaterial( { color: 0x0000ff, size: 10, sizeAttenuation: false } );
+
+const dotDummy = new THREE.Points( dotGeometry, dotMaterial );
+
+// ref points
+
+scene.add(dotDummy);
 
 const loader = new THREE.CubeTextureLoader();
 const textureCube = loader.load([
