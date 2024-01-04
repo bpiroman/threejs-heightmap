@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {math} from './math.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20000 );
@@ -116,28 +117,28 @@ window.addEventListener("load", function() {
 			vertices[i+2] = result*10;
 
 			// Bilinear filter
-			const offset = new THREE.Vector2(-250, -250);
-			const dimensions = new THREE.Vector2(500, 500);
-			console.log(offset);
-			console.log(dimensions);
+			const offset = new THREE.Vector2(-392.5, -288);
+			const dimensions = new THREE.Vector2(785, 576);
+
+			const xf = 1.0 - math.sat((vx - offset.x) / dimensions.x);
+			const yf = math.sat((vy - offset.y) / dimensions.y);
+			const w = img1.width - 1;
+			const h = img1.height - 1;
+
+			const x1 = Math.floor(xf * w);
+			const y1 = Math.floor(yf * h);
+			const x2 = math.clamp(x1 + 1, 0, w);
+			const y2 = math.clamp(y1 + 1, 0, h);
+
+			const xp = xf * w - x1;
+			const yp = yf * h - y1;
+
+			console.log(xp, yp);
 
 		} else {
 			vertices[i+2] = 0.0;
 		}
-
 	
-		// const xf = 1.0 - math.sat((x - offset.x) / dimensions.x);
-		// const yf = math.sat((y - offset.y) / dimensions.y);
-		// const w = this._data.width - 1;
-		// const h = this._data.height - 1;
-	
-		// const x1 = Math.floor(xf * w);
-		// const y1 = Math.floor(yf * h);
-		// const x2 = math.clamp(x1 + 1, 0, w);
-		// const y2 = math.clamp(y1 + 1, 0, h);
-	
-		// const xp = xf * w - x1;
-		// const yp = yf * h - y1;
 	
 		// const p11 = _GetPixelAsFloat(x1, y1);
 		// const p21 = _GetPixelAsFloat(x2, y1);
