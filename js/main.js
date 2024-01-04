@@ -40,9 +40,10 @@ texture.colorSpace = THREE.SRGBColorSpace;
 const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
 
 const plane = new THREE.Mesh(
-	new THREE.PlaneGeometry(786, 577, 50, 50),
+	new THREE.PlaneGeometry(786, 577, 256, 256),
 	new THREE.MeshStandardMaterial({
 		// color: '0x000000',
+		wireframe: true,
 		side: THREE.DoubleSide,
 		map: texture
 	  })
@@ -82,14 +83,18 @@ img1.src = "./textures/WAPL_2022_heightmap_1m.png";
 const imgSimon = new Image();
 imgSimon.src = "./textures/heightmap-simondev.jpg";
 
-function _GetImageData(image, simon) {
+function _GetPixelAsFloat(x, y, dataImg) {
+	const position = (x + img1.width * y) * 4;
+	const data = dataImg.data;
+	return data[position] / 255.0;
+}
+
+function _GetImageData(image) {
     const canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
 	console.log("image width: "+image.width);
 	console.log("image height: "+image.height);
-	console.log("SimonDev image width: "+simon.width);
-	console.log("SimonDev image height: "+simon.height);
 
     const ctx = canvas.getContext( '2d' );
     ctx.drawImage(image, 0, 0);
@@ -101,54 +106,45 @@ function _GetImageData(image, simon) {
 }
 
 window.addEventListener("load", function() { 
-	const dataImg = _GetImageData(img1, imgSimon);
+	const dataImg = _GetImageData(img1);
 
 	const vertices = plane.geometry.attributes.position.array
 	for (var i = 0; i <= vertices.length; i += 3) {
 		let vx = vertices[i];
 		let vy = vertices[i+1];
-		// console.log(data);
-		if (vx == -393 && vy == 288.5) {
-			// console.log(data);
-			const position = (vx + dataImg.width * vy) * 4;
-			const dataImageData = dataImg.data;
-			const result = dataImageData[position] / 255.0;
-			console.log(result*10);
-			vertices[i+2] = result*10;
 
-			// Bilinear filter
-			const offset = new THREE.Vector2(-392.5, -288);
-			const dimensions = new THREE.Vector2(785, 576);
+		const position = (vx + dataImg.width * vy) * 4;
+		const dataImageData = dataImg.data;
+		const result = dataImageData[position] / 255.0;
+		console.log(result*10);
+		vertices[i+2] = result*10;
 
-			const xf = 1.0 - math.sat((vx - offset.x) / dimensions.x);
-			const yf = math.sat((vy - offset.y) / dimensions.y);
-			const w = img1.width - 1;
-			const h = img1.height - 1;
+		// Bilinear filter
+		const offset = new THREE.Vector2(-392.5, -288);
+		const dimensions = new THREE.Vector2(785, 576);
 
-			const x1 = Math.floor(xf * w);
-			const y1 = Math.floor(yf * h);
-			const x2 = math.clamp(x1 + 1, 0, w);
-			const y2 = math.clamp(y1 + 1, 0, h);
+		const xf = 1.0 - math.sat((vx - offset.x) / dimensions.x);
+		const yf = math.sat((vy - offset.y) / dimensions.y);
+		const w = img1.width - 1;
+		const h = img1.height - 1;
 
-			const xp = xf * w - x1;
-			const yp = yf * h - y1;
+		const x1 = Math.floor(xf * w);
+		const y1 = Math.floor(yf * h);
+		const x2 = math.clamp(x1 + 1, 0, w);
+		const y2 = math.clamp(y1 + 1, 0, h);
 
-			console.log(xp, yp);
+		const xp = xf * w - x1;
+		const yp = yf * h - y1;
 
-		} else {
-			vertices[i+2] = 0.0;
-		}
-	
-	
-		// const p11 = _GetPixelAsFloat(x1, y1);
-		// const p21 = _GetPixelAsFloat(x2, y1);
-		// const p12 = _GetPixelAsFloat(x1, y2);
-		// const p22 = _GetPixelAsFloat(x2, y2);
-	
-		// const px1 = math.lerp(xp, p11, p21);
-		// const px2 = math.lerp(xp, p12, p22);
-	
-		// return math.lerp(yp, px1, px2) * this._params.height;
+		const p11 = _GetPixelAsFloat(x1, y1, dataImg);
+		const p21 = _GetPixelAsFloat(x2, y1, dataImg);
+		const p12 = _GetPixelAsFloat(x1, y2, dataImg);
+		const p22 = _GetPixelAsFloat(x2, y2, dataImg);
+
+		const px1 = math.lerp(xp, p11, p21);
+		const px2 = math.lerp(xp, p12, p22);
+		console.log(math.lerp(yp, px1, px2) * 10);
+		vertices[i+2] = math.lerp(yp, px1, px2) * 200;	
 	}
 	plane.geometry.attributes.position.needsUpdate = true;
 	plane.geometry.computeVertexNormals();
