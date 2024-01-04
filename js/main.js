@@ -40,10 +40,10 @@ texture.colorSpace = THREE.SRGBColorSpace;
 const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
 
 const plane = new THREE.Mesh(
-	new THREE.PlaneGeometry(786, 577, 256, 256),
+	new THREE.PlaneGeometry(786, 577, 512, 512),
 	new THREE.MeshStandardMaterial({
 		// color: '0x000000',
-		wireframe: true,
+		// wireframe: true,
 		side: THREE.DoubleSide,
 		map: texture
 	  })
@@ -112,12 +112,6 @@ window.addEventListener("load", function() {
 	for (var i = 0; i <= vertices.length; i += 3) {
 		let vx = vertices[i];
 		let vy = vertices[i+1];
-
-		const position = (vx + dataImg.width * vy) * 4;
-		const dataImageData = dataImg.data;
-		const result = dataImageData[position] / 255.0;
-		console.log(result*10);
-		vertices[i+2] = result*10;
 
 		// Bilinear filter
 		const offset = new THREE.Vector2(-392.5, -288);
