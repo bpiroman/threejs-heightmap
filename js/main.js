@@ -42,10 +42,10 @@ const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_
 const plane = new THREE.Mesh(
 	new THREE.PlaneGeometry(786, 577, 512, 512),
 	new THREE.MeshStandardMaterial({
-		// color: '0x000000',
+		color: '#808080',
 		// wireframe: true,
 		side: THREE.DoubleSide,
-		map: texture
+		// map: texture
 	  })
 );
 plane.castShadow = true;
@@ -84,7 +84,8 @@ const imgSimon = new Image();
 imgSimon.src = "./textures/heightmap-simondev.jpg";
 
 function _GetPixelAsFloat(x, y, dataImg) {
-	const position = (x + img1.width * y) * 4;
+	const position = (x + dataImg.width * y) * 4;
+	// console.log(position);
 	const data = dataImg.data;
 	return data[position] / 255.0;
 }
@@ -113,32 +114,36 @@ window.addEventListener("load", function() {
 		let vx = vertices[i];
 		let vy = vertices[i+1];
 
-		// Bilinear filter
-		const offset = new THREE.Vector2(-392.5, -288);
-		const dimensions = new THREE.Vector2(785, 576);
-
-		const xf = 1.0 - math.sat((vx - offset.x) / dimensions.x);
-		const yf = math.sat((vy - offset.y) / dimensions.y);
-		const w = img1.width - 1;
-		const h = img1.height - 1;
-
-		const x1 = Math.floor(xf * w);
-		const y1 = Math.floor(yf * h);
-		const x2 = math.clamp(x1 + 1, 0, w);
-		const y2 = math.clamp(y1 + 1, 0, h);
-
-		const xp = xf * w - x1;
-		const yp = yf * h - y1;
-
-		const p11 = _GetPixelAsFloat(x1, y1, dataImg);
-		const p21 = _GetPixelAsFloat(x2, y1, dataImg);
-		const p12 = _GetPixelAsFloat(x1, y2, dataImg);
-		const p22 = _GetPixelAsFloat(x2, y2, dataImg);
-
-		const px1 = math.lerp(xp, p11, p21);
-		const px2 = math.lerp(xp, p12, p22);
-		console.log(math.lerp(yp, px1, px2) * 10);
-		vertices[i+2] = math.lerp(yp, px1, px2) * 200;	
+		if (vx == -393 && vy == 288.5) {
+			// Bilinear filter
+			const offset = new THREE.Vector2(-392.5, -288);
+			const dimensions = new THREE.Vector2(785, 576);
+	
+			const xf = 1.0 - math.sat((vx - offset.x) / dimensions.x);
+			const yf = math.sat((vy - offset.y) / dimensions.y);
+			const w = img1.width - 1;
+			const h = img1.height - 1;
+	
+			const x1 = Math.floor(xf * w);
+			const y1 = Math.floor(yf * h);
+			const x2 = math.clamp(x1 + 1, 0, w);
+			const y2 = math.clamp(y1 + 1, 0, h);
+	
+			const xp = xf * w - x1;
+			const yp = yf * h - y1;
+	
+			const p11 = _GetPixelAsFloat(x1, y1, dataImg);
+			const p21 = _GetPixelAsFloat(x2, y1, dataImg);
+			const p12 = _GetPixelAsFloat(x1, y2, dataImg);
+			const p22 = _GetPixelAsFloat(x2, y2, dataImg);
+	
+			const px1 = math.lerp(xp, p11, p21);
+			const px2 = math.lerp(xp, p12, p22);
+			console.log(math.lerp(yp, px1, px2) * 100);
+			vertices[i+2] = math.lerp(yp, px1, px2) * 100;
+		} else {
+			vertices[i+2] = 0.0;
+		}
 	}
 	plane.geometry.attributes.position.needsUpdate = true;
 	plane.geometry.computeVertexNormals();
