@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+// import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from './OrbitControls.js';
 import {math} from './math.js';
 
 const scene = new THREE.Scene();
@@ -254,6 +255,37 @@ scene.background = textureCube;
 // scene.add( helper );
 
 const controls = new OrbitControls( camera, renderer.domElement );
+
+// controls.keys = {
+// 	LEFT: 'ArrowLeft', //left arrow
+// 	UP: 'ArrowUp', // up arrow
+// 	RIGHT: 'ArrowRight', // right arrow
+// 	BOTTOM: 'ArrowDown' // down arrow
+// };
+
+// controls.mouseButtons = {
+// 	LEFT: THREE.MOUSE.PAN,
+// 	MIDDLE: THREE.MOUSE.DOLLY,
+// 	RIGHT: THREE.MOUSE.ROTATE
+// }
+
+// panOffset.set(te[8],0,te[10]);
+
+// var panFront = function() {
+
+//     let v = new THREE.Vector3();
+
+//     return function panFront( distance, objectMatrix ) {
+
+//         v.setFromMatrixColumn( objectMatrix, 2 ); // get Z column of objectMatrix
+//         v.y = 0;
+
+//         v.multiplyScalar( -distance );
+
+//         panOffset.add( v );
+//     };
+
+// }();
 
 camera.position.z = 0;
 camera.position.y = 250;
