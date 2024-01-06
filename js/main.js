@@ -37,7 +37,6 @@ scene.add(light);
 
 const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
 texture.colorSpace = THREE.SRGBColorSpace;
-const heightMap = new THREE.TextureLoader().load('./textures/textures/WAPL_2022_heightmap_1m.png');
 
 const plane = new THREE.Mesh(
 	new THREE.PlaneGeometry(785, 576, 512, 512),
