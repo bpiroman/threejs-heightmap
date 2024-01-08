@@ -81,8 +81,6 @@ scene.add(plane);
 // Modify vertices with Height Map
 const img1 = new Image(); // Image constructor
 img1.src = "./textures/WAPL_2022_heightmap_1m.png";
-const imgSimon = new Image();
-imgSimon.src = "./textures/heightmap-simondev.jpg";
 
 function _GetPixelAsFloat(x, y, dataImg) {
 	const position = (x + dataImg.width * y) * 4;
