@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-// import { OrbitControls } from './OrbitControls.js';
-import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
+// import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
 import {math} from './math.js';
 
 const scene = new THREE.Scene();
@@ -253,7 +252,9 @@ scene.background = textureCube;
 // const helper = new THREE.CameraHelper( light.shadow.camera );
 // scene.add( helper );
 
+// important!
 const controls = new OrbitControls( camera, renderer.domElement );
+
 // const controls = new FirstPersonControls( camera, renderer.domElement);
 // controls.movementSpeed = 150;
 // controls.lookSpeed = 0.1;
