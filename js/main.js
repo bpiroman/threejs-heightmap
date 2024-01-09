@@ -99,6 +99,7 @@ const img1 = new Image(); // Image constructor
 // img1.crossOrigin = "anonymous";
 // img1.alt = "height map";
 img1.src = "https://storage.googleapis.com/wapl3d.appspot.com/textures/WAPL_2022_heightmap_1m.png";
+img1.setAttribute('crossOrigin', 'anonymous');
 // img1.crossOrigin = "Anonymous";
 
 function _GetPixelAsFloat(x, y, dataImg) {
