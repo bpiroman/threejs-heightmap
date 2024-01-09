@@ -3,6 +3,23 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
 import {math} from './math.js';
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+	apiKey: "AIzaSyCDjeMG_reJ8seJ3CJQRX34K1y2eWGa2lo",
+	authDomain: "wapl3d.firebaseapp.com",
+	projectId: "wapl3d",
+	storageBucket: "wapl3d.appspot.com",
+	messagingSenderId: "645651849138",
+	appId: "1:645651849138:web:0003eef9b1466fe5758eab",
+	measurementId: "G-F2FR3MGK8W"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20000 );
 
@@ -36,7 +53,7 @@ scene.add(light);
 light = new THREE.AmbientLight(0x909090);
 scene.add(light);
 
-const texture = new THREE.TextureLoader().load('./textures/WAPL_2022_raster_1m.jpg');
+const texture = new THREE.TextureLoader().load('https://storage.googleapis.com/wapl3d.appspot.com/textures/WAPL_2022_raster_1m.jpg');
 texture.colorSpace = THREE.SRGBColorSpace;
 
 const plane = new THREE.Mesh(
@@ -79,7 +96,7 @@ scene.add(plane);
 
 // Modify vertices with Height Map
 const img1 = new Image(); // Image constructor
-img1.src = "./textures/WAPL_2022_heightmap_1m.png";
+img1.src = "https://storage.googleapis.com/wapl3d.appspot.com/textures/WAPL_2022_heightmap_1m.png";
 
 function _GetPixelAsFloat(x, y, dataImg) {
 	const position = (x + dataImg.width * y) * 4;
@@ -239,12 +256,12 @@ scene.add(dotDummy);
 
 const loader = new THREE.CubeTextureLoader();
 const textureCube = loader.load([
-	'./textures/cubemap/px.png',
-	'./textures/cubemap/nx.png',
-	'./textures/cubemap/py.png',
-	'./textures/cubemap/ny.png',
-	'./textures/cubemap/pz.png',
-	'./textures/cubemap/nz.png',
+	'https://storage.googleapis.com/wapl3d.appspot.com/cubemap/px.png',
+	'https://storage.googleapis.com/wapl3d.appspot.com/cubemap/nx.png',
+	'https://storage.googleapis.com/wapl3d.appspot.com/cubemap/py.png',
+	'https://storage.googleapis.com/wapl3d.appspot.com/cubemap/ny.png',
+	'https://storage.googleapis.com/wapl3d.appspot.com/cubemap/pz.png',
+	'https://storage.googleapis.com/wapl3d.appspot.com/cubemap/nz.png',
 ]);
 scene.background = textureCube;
 
