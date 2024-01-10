@@ -3,22 +3,22 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
 import {math} from './math.js';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
 
-const firebaseConfig = {
-	apiKey: "AIzaSyCDjeMG_reJ8seJ3CJQRX34K1y2eWGa2lo",
-	authDomain: "wapl3d.firebaseapp.com",
-	projectId: "wapl3d",
-	storageBucket: "wapl3d.appspot.com",
-	messagingSenderId: "645651849138",
-	appId: "1:645651849138:web:0003eef9b1466fe5758eab",
-	measurementId: "G-F2FR3MGK8W"
-};
+// const firebaseConfig = {
+// 	apiKey: "AIzaSyCDjeMG_reJ8seJ3CJQRX34K1y2eWGa2lo",
+// 	authDomain: "wapl3d.firebaseapp.com",
+// 	projectId: "wapl3d",
+// 	storageBucket: "wapl3d.appspot.com",
+// 	messagingSenderId: "645651849138",
+// 	appId: "1:645651849138:web:0003eef9b1466fe5758eab",
+// 	measurementId: "G-F2FR3MGK8W"
+// };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 20000 );
