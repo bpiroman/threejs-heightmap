@@ -50,7 +50,7 @@ scene.add(light);
 light = new THREE.AmbientLight(0x909090);
 scene.add(light);
 
-const texture = new THREE.TextureLoader().load('https://storage.googleapis.com/wapl3d.appspot.com/textures/WAPL_2022_raster_1m.jpg');
+const texture = new THREE.TextureLoader().load('https://storage.googleapis.com/wapl3d-legacy.appspot.com/textures/WAPL_2022_raster_1m.jpg');
 texture.colorSpace = THREE.SRGBColorSpace;
 
 const plane = new THREE.Mesh(
@@ -69,7 +69,7 @@ scene.add(plane);
 
 // Modify vertices with Height Map
 const img1 = new Image();
-img1.src = "https://storage.googleapis.com/wapl3d.appspot.com/textures/WAPL_2022_heightmap_1m.png";
+img1.src = "https://storage.googleapis.com/wapl3d-legacy.appspot.com/textures/WAPL_2022_heightmap_1m.png";
 img1.setAttribute('crossOrigin', 'anonymous');
 // img1.crossOrigin = "Anonymous";
 
