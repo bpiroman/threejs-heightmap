@@ -69,7 +69,7 @@ scene.add(plane);
 
 // Modify vertices with Height Map
 const img1 = new Image();
-img1.src = "https://github.com/bpiroman/threejs-heightmap/assets/73277372/006ac82f-706d-4157-ab60-028cb37c4bbf";
+img1.src = "https://storage.googleapis.com/wapl3d_legacy/WAPL_2022_heightmap_1m.png";
 img1.setAttribute('crossOrigin', 'anonymous');
 // img1.crossOrigin = "Anonymous";
 
